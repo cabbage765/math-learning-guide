@@ -326,6 +326,20 @@ a.section-row:hover { color: var(--accent); }
 
 .q-head { display: flex; gap: 14px; align-items: flex-start; }
 .q-text { padding-top: 2px; }
+
+.q-tag {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.6;
+  padding: 0 8px;
+  margin-right: 6px;
+  border-radius: 6px;
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+
+.q-tag.hard { background: var(--accent-soft); color: var(--accent); }
 .q.solved .num { background: var(--ok); border-color: var(--ok); color: #fff; }
 
 .answer-row, .choices {

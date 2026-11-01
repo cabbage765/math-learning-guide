@@ -10,7 +10,8 @@
 
   document.title = id + ' ' + data.title;
 
-  const storageKey = 'progress-' + id;
+  // 題目改版後換新的 key，避免舊紀錄對到不同的題目
+  const storageKey = 'progress2-' + id;
   const total = data.groups.reduce((n, g) => n + g.questions.length, 0);
   let solved = loadSolved();
 
@@ -181,7 +182,7 @@
     <div class="card"><ul>${data.traps.map(t => `<li>${fmt(t)}</li>`).join('')}</ul></div>
 
     <h2>練習題</h2>
-    <p class="note">建議一天做一組，錯的題目隔兩三天再做一次。答對或答錯都會有回饋圖片，可以到<a href="rewards.html">獎勵設定</a>換成喜歡的圖片。</p>
+    <p class="note">建議一天做一組，錯的題目隔兩三天再做一次。每組裡有一題「挑戰」和一題「閱讀理解」，閱讀理解題要先慢慢讀完、圈出題目真正在問什麼。答對或答錯都會有回饋圖片，可以到<a href="rewards.html">獎勵設定</a>換成喜歡的圖片。</p>
     <div class="progress" id="score" aria-live="polite"></div>
     <div id="groups"></div>
     <button class="link-btn" id="reset" type="button">清除這個單元的作答紀錄</button>`;
@@ -208,7 +209,7 @@
          </form>`;
 
     el.innerHTML = `
-      <div class="q-head"><span class="num">${i + 1}</span><div class="q-text">${fmt(q.q)}</div></div>
+      <div class="q-head"><span class="num">${i + 1}</span><div class="q-text">${q.tag ? `<span class="q-tag${q.tag === '挑戰' ? ' hard' : ''}">${q.tag}</span>` : ''}${fmt(q.q)}</div></div>
       ${answerHtml}
       <div class="feedback-slot"></div>
       <div class="q-tools">
