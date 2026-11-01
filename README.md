@@ -8,7 +8,14 @@
 
 - `index.html`：首頁，重點摘要
 - `daily-practice.html`：每日練習的做法、一週範例與打勾表
+- `chapters.html`：康軒國一上學期章節列表
+- `practice.html?s=2-1`：單元的關鍵建議與互動練習題（目前完成第 2 章）
+- `rewards.html`：答題回饋的圖片設定（圖片只存在瀏覽器的 IndexedDB）
 - `advice.html`：完整五點建議
 - `setup.html`：製作紀錄
 
-純 HTML + CSS，不需要建置，直接用瀏覽器打開 `index.html` 就能預覽。
+## 新增單元
+
+在 `js/sections.js` 的 `SECTIONS` 裡加上單元資料，章節列表就會自動出現連結。題型有 `choice`、`number`、`fraction`、`set`，題目文字裡的 `{a/b}` 會顯示成分數。
+
+純 HTML + CSS + JavaScript，不需要建置，直接用瀏覽器打開 `index.html` 就能預覽。

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>獎勵設定</title>
+  <meta name="description" content="設定答題時出現的讚美與鼓勵圖片。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="./">國一數學陪讀指南</a>
+      <nav>
+        <a href="./">首頁</a>
+        <a href="daily-practice.html">每日練習</a>
+        <a href="chapters.html">章節練習</a>
+        <a href="advice.html">完整建議</a>
+        <a href="setup.html">製作紀錄</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <p class="crumb"><a href="chapters.html">章節練習</a> › 獎勵設定</p>
+    <h1>獎勵設定</h1>
+    <p class="lead">把孩子喜歡的圖片放進各個主題。作答時，答對會隨機出現一張圖片配上讚美，答錯會配上鼓勵的話。</p>
+
+    <div class="card">
+      <h2>先看看效果</h2>
+      <div class="choices">
+        <button type="button" class="choice" id="try-good">預覽答對</button>
+        <button type="button" class="choice" id="try-bad">預覽答錯</button>
+      </div>
+      <div id="preview"></div>
+    </div>
+
+    <div id="themes"></div>
+
+    <div class="card">
+      <h2>關於圖片</h2>
+      <ul>
+        <li>圖片只會存在<strong>這台裝置的這個瀏覽器</strong>裡，不會上傳到網路，別人打開網站也看不到。</li>
+        <li>換手機、換瀏覽器，或清除瀏覽器資料後，需要重新放一次圖片。</li>
+        <li>網站本身沒有放這些藝人、角色或球員的圖片，是為了尊重版權與肖像權。家長自己準備的圖片只在家裡的裝置上顯示。</li>
+        <li>還沒放圖片的主題，會用表情符號代替。</li>
+      </ul>
+    </div>
+    <p class="note" id="storage-error" hidden>這個瀏覽器無法儲存圖片（可能是無痕模式），回饋會先用表情符號代替。</p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">本站整理自與 Claude 的對話，內容僅供參考，不能取代老師或專業人員的評估。</div>
+  </footer>
+
+  <script src="js/rewards.js"></script>
+  <script>
+    (function () {
+      const themesEl = document.getElementById('themes');
+
+      themesEl.innerHTML = Rewards.THEMES.map(t => `
+        <div class="card theme-card" data-theme="${t.id}">
+          <div class="theme-head">
+            <span class="theme-icon" style="background:${t.color}">${t.emoji}</span>
+            <h2>${t.name}</h2>
+          </div>
+          <div class="thumbs"></div>
+          <label class="btn file-btn">加入圖片<input type="file" accept="image/*" multiple></label>
+        </div>`).join('');
+
+      function thumb(image) {
+        const wrap = document.createElement('div');
+        wrap.className = 'thumb';
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(image.blob);
+        img.alt = '';
+        img.onload = () => URL.revokeObjectURL(img.src);
+        const del = document.createElement('button');
+        del.type = 'button';
+        del.textContent = '×';
+        del.setAttribute('aria-label', '刪除這張圖片');
+        del.addEventListener('click', async () => {
+          await Rewards.deleteImage(image.id);
+          refresh();
+        });
+        wrap.append(img, del);
+        return wrap;
+      }
+
+      async function refresh() {
+        const images = await Rewards.listImages();
+        Rewards.THEMES.forEach(t => {
+          const box = themesEl.querySelector(`[data-theme="${t.id}"] .thumbs`);
+          const mine = images.filter(im => im.theme === t.id);
+          if (mine.length) {
+            box.replaceChildren(...mine.map(thumb));
+          } else {
+            box.innerHTML = '<span class="note">還沒有圖片，會先用表情符號代替。</span>';
+          }
+        });
+      }
+
+      themesEl.querySelectorAll('.theme-card').forEach(card => {
+        card.querySelector('input').addEventListener('change', async e => {
+          const files = [...e.target.files];
+          e.target.value = '';
+          try {
+            for (const f of files) await Rewards.addImage(card.dataset.theme, await Rewards.resize(f));
+          } catch (err) {
+            document.getElementById('storage-error').hidden = false;
+          }
+          refresh();
+        });
+      });
+
+      const preview = document.getElementById('preview');
+      document.getElementById('try-good').addEventListener('click', () => Rewards.show(preview, true));
+      document.getElementById('try-bad').addEventListener('click', () => Rewards.show(preview, false));
+
+      refresh();
+    })();
+  </script>
+</body>
+</html>

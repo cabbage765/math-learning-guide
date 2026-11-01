@@ -268,7 +268,200 @@ code {
   padding: 20px 0 32px;
 }
 
+/* 麵包屑 */
+.crumb { font-size: 14px; color: var(--muted); margin: 0 0 8px; }
+.crumb a { color: var(--muted); }
+
+/* 分數 */
+.frac {
+  display: inline-flex;
+  flex-direction: column;
+  vertical-align: middle;
+  text-align: center;
+  font-size: .85em;
+  line-height: 1.25;
+  margin: 0 2px;
+}
+
+.frac > span:first-child { border-bottom: 1px solid currentColor; padding: 0 2px; }
+
+/* 章節列表 */
+.section-list { list-style: none; padding: 0; margin: 0; }
+
+.section-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 4px;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.section-list li:first-child .section-row { border-top: none; }
+a.section-row:hover { color: var(--accent); }
+.section-row.soon { color: var(--muted); }
+
+.pill {
+  flex: none;
+  font-size: 13px;
+  padding: 1px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.pill.ok { background: var(--ok-soft); color: var(--ok); border-color: transparent; }
+
+/* 練習題 */
+.ask-list { margin: 0; padding-left: 1.4em; }
+
+.group-title { margin-top: 32px; }
+
+.q { transition: border-color .2s; }
+.q.solved { border-color: var(--ok); }
+
+.q-head { display: flex; gap: 14px; align-items: flex-start; }
+.q-text { padding-top: 2px; }
+.q.solved .num { background: var(--ok); border-color: var(--ok); color: #fff; }
+
+.answer-row, .choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.answer-row input {
+  font: inherit;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  width: 180px;
+  max-width: 100%;
+}
+
+button.btn { border: none; cursor: pointer; font: inherit; font-weight: 600; margin-top: 0; }
+button:disabled { cursor: default; opacity: .55; }
+
+.choice {
+  font: inherit;
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.choice:hover:not(:disabled) { border-color: var(--accent); }
+.choice.right { border-color: var(--ok); background: var(--ok-soft); color: var(--ok); opacity: 1; }
+.choice.wrong-pick { text-decoration: line-through; }
+
+.q-tools { display: flex; gap: 16px; }
+
+.hint, .key {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--bg);
+  font-size: 15px;
+}
+
+.key { border-left: 3px solid var(--ok); }
+
+/* 答題回饋 */
+.feedback {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 12px;
+  animation: pop .25s ease-out;
+}
+
+.feedback.good { background: var(--ok-soft); }
+.feedback.try { background: var(--accent-soft); }
+
+.fb-pic {
+  flex: none;
+  width: 88px;
+  height: 88px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  font-size: 44px;
+}
+
+.fb-pic img { width: 100%; height: 100%; object-fit: cover; }
+
+.fb-msg strong { display: block; font-size: 18px; }
+.feedback.good strong { color: var(--ok); }
+.feedback.try strong { color: var(--accent); }
+
+@keyframes pop {
+  from { transform: scale(.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feedback { animation: none; }
+}
+
+/* 獎勵設定 */
+.theme-head { display: flex; align-items: center; gap: 12px; }
+.theme-head h2 { margin: 0; }
+
+.theme-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+}
+
+.thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 6px; }
+
+.thumb {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.thumb button {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, .6);
+  color: #fff;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.file-btn { cursor: pointer; }
+.file-btn input { display: none; }
+
 @media (max-width: 520px) {
+  .fb-pic { width: 72px; height: 72px; font-size: 36px; }
+
   h1 { font-size: 25px; }
   .card { padding: 16px; }
 }
