@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>每日練習計畫</title>
+  <meta name="description" content="每天少量、固定，比週末狂補有效：每日 20～30 分鐘的練習做法、一週範例與每日打勾表。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="./">國一數學陪讀指南</a>
+      <nav>
+        <a href="./">首頁</a>
+        <a href="daily-practice.html" aria-current="page">每日練習</a>
+        <a href="advice.html">完整建議</a>
+        <a href="setup.html">製作紀錄</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <span class="badge">最重要的一點</span>
+    <h1>每天少量、固定，比週末狂補有效</h1>
+    <p class="lead">數學靠的是反覆接觸。每天一點點，大腦有時間消化；週末一次狂補三小時，隔週就忘一大半，孩子也更討厭數學。</p>
+
+    <h2>四個做法</h2>
+
+    <div class="card">
+      <h3>1. 每天 20～30 分鐘就好</h3>
+      <p>挑一個每天都做得到的時段，例如晚餐後或洗澡前，固定下來。時間短，孩子比較不會抗拒；固定，才會變成習慣。寧可每天 20 分鐘，也不要一週一次兩小時。</p>
+    </div>
+
+    <div class="card">
+      <h3>2. 寫 5～10 題「有點挑戰但做得出來」的題目</h3>
+      <p>題目的難度比數量重要。一個簡單的判斷方式：</p>
+      <ul>
+        <li><strong>10 題錯 7 題以上</strong>：太難了，往回退一個單元或年級。</li>
+        <li><strong>10 題錯 2～4 題</strong>：剛剛好，就是這個難度。</li>
+        <li><strong>10 題全對又很快</strong>：太簡單，可以往前推進。</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>3. 錯的題目隔兩三天再做一次</h3>
+      <p>把錯題記下來（抄在錯題本，或拍照存在手機裡），隔兩三天拿出來重做。重做錯題，比寫新題目更有用。</p>
+      <div class="steps">
+        <div class="step"><strong>第 1 天</strong><span>寫題目，把錯題記下來</span></div>
+        <div class="step"><strong>當天</strong><span>對答案、看解法，弄懂為什麼錯</span></div>
+        <div class="step"><strong>第 3～4 天</strong><span>不看解法，重做一次</span></div>
+        <div class="step"><strong>一週後</strong><span>再做一次，對了才算真的會</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>4. 請她講給你聽</h3>
+      <p>做完之後，挑一兩題問她：「你跟我說這題怎麼想的？」講得出來才是真的懂。講到一半卡住的地方，往往就是她沒弄懂的地方。</p>
+      <p class="note">爸媽不會解也沒關係，當一個好奇的聽眾就有效果。重點是聽，不是糾正。</p>
+    </div>
+
+    <h2>一週範例</h2>
+    <div class="card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr><th>日子</th><th>內容</th><th>時間</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>週一</td><td>新題目 5～10 題，記下錯題</td><td>20～30 分</td></tr>
+            <tr><td>週二</td><td>新題目 5～10 題，記下錯題</td><td>20～30 分</td></tr>
+            <tr><td>週三</td><td>重做週一的錯題，再寫幾題新題目</td><td>20～30 分</td></tr>
+            <tr><td>週四</td><td>重做週二的錯題，再寫幾題新題目</td><td>20～30 分</td></tr>
+            <tr><td>週五</td><td>新題目 5～10 題，挑一題講給爸媽聽</td><td>20～30 分</td></tr>
+            <tr><td>週六</td><td>這週所有錯題再做一次</td><td>20～30 分</td></tr>
+            <tr><td>週日</td><td>休息，或看一支均一教育平台的影片</td><td>自由</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">範例只是參考，配合學校進度與孩子的作息調整就好。</p>
+    </div>
+
+    <h2>今天的打勾表</h2>
+    <div class="card">
+      <ul class="checklist" id="checklist">
+        <li><label><input type="checkbox" data-key="time"><span>練習 20～30 分鐘</span></label></li>
+        <li><label><input type="checkbox" data-key="new"><span>寫 5～10 題新題目</span></label></li>
+        <li><label><input type="checkbox" data-key="redo"><span>重做 2～3 天前的錯題</span></label></li>
+        <li><label><input type="checkbox" data-key="explain"><span>挑一題講給爸媽聽</span></label></li>
+        <li><label><input type="checkbox" data-key="praise"><span>爸媽稱讚了今天的努力</span></label></li>
+      </ul>
+      <div class="progress" id="progress" aria-live="polite"></div>
+      <button class="link-btn" id="reset" type="button">清除今天的勾選</button>
+      <p class="note">勾選只會存在這台裝置的瀏覽器裡，隔天會自動重新開始。</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">本站整理自與 Claude 的對話，內容僅供參考，不能取代老師或專業人員的評估。</div>
+  </footer>
+
+  <script>
+    (function () {
+      var today = new Date().toLocaleDateString('sv-SE');
+      var storageKey = 'daily-checklist';
+      var boxes = document.querySelectorAll('#checklist input');
+      var progress = document.getElementById('progress');
+
+      function load() {
+        try {
+          var saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
+          return saved && saved.date === today ? saved.items : {};
+        } catch (e) {
+          return {};
+        }
+      }
+
+      function save(items) {
+        try {
+          localStorage.setItem(storageKey, JSON.stringify({ date: today, items: items }));
+        } catch (e) {}
+      }
+
+      function render() {
+        var done = 0;
+        boxes.forEach(function (b) { if (b.checked) done++; });
+        if (done === boxes.length) {
+          progress.textContent = '今天全部完成了，辛苦了！';
+          progress.classList.add('done');
+        } else {
+          progress.textContent = '今天完成 ' + done + ' / ' + boxes.length + ' 項';
+          progress.classList.remove('done');
+        }
+      }
+
+      var items = load();
+      boxes.forEach(function (b) {
+        b.checked = !!items[b.dataset.key];
+        b.addEventListener('change', function () {
+          items[b.dataset.key] = b.checked;
+          save(items);
+          render();
+        });
+      });
+
+      document.getElementById('reset').addEventListener('click', function () {
+        items = {};
+        boxes.forEach(function (b) { b.checked = false; });
+        save(items);
+        render();
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
