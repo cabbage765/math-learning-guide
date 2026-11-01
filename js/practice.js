@@ -37,7 +37,66 @@
       .replace(/[０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0))
       .replace(/／/g, '/')
       .replace(/[−－–—]/g, '-')
-      .replace(/[，、]/g, ',');
+      .replace(/＋/g, '+')
+      .replace(/[，、]/g, ',')
+      .replace(/[XＸｘ]/g, 'x')
+      .replace(/[（]/g, '(').replace(/[）]/g, ')');
+  }
+
+  // 把含 x 的式子算成數值，支援 2x、3(x+1) 這種省略乘號的寫法；5/6x 視為 (5/6)x
+  function evalExpr(src, x) {
+    const s = src.replace(/\s+/g, '').replace(/[×＊]/g, '*').replace(/÷/g, '/');
+    let i = 0;
+
+    function expr() {
+      let v = term();
+      while (s[i] === '+' || s[i] === '-') {
+        const op = s[i++];
+        const t = term();
+        v = op === '+' ? v + t : v - t;
+      }
+      return v;
+    }
+
+    function term() {
+      let v = unary();
+      for (;;) {
+        const c = s[i];
+        if (c === '*' || c === '/') {
+          i++;
+          const f = unary();
+          v = c === '*' ? v * f : v / f;
+        } else if (c === 'x' || c === '(' || /\d/.test(c || '')) {
+          v *= unary();
+        } else {
+          return v;
+        }
+      }
+    }
+
+    function unary() {
+      if (s[i] === '-') { i++; return -unary(); }
+      if (s[i] === '+') { i++; return unary(); }
+      return factor();
+    }
+
+    function factor() {
+      if (s[i] === '(') {
+        i++;
+        const v = expr();
+        if (s[i++] !== ')') throw new Error('missing )');
+        return v;
+      }
+      if (s[i] === 'x') { i++; return x; }
+      const m = s.slice(i).match(/^\d+(\.\d+)?/);
+      if (!m) throw new Error('unexpected ' + s[i]);
+      i += m[0].length;
+      return Number(m[0]);
+    }
+
+    const v = expr();
+    if (i !== s.length) throw new Error('trailing input');
+    return v;
   }
 
   function gcd(a, b) {
@@ -57,6 +116,20 @@
     if (q.type === 'choice') return raw === q.answer ? 'correct' : 'wrong';
 
     const s = normalize(raw);
+    if (q.type === 'expr') {
+      let same;
+      try {
+        same = [2, 3, 7].every(x => Math.abs(evalExpr(s, x) - evalExpr(q.answer, x)) < 1e-9);
+      } catch (e) {
+        return 'invalid';
+      }
+      if (!same) return 'wrong';
+      // 值對了，但還有括號、x 出現不只一次，或常數項不只一個，代表還沒化簡完
+      const terms = s.replace(/\s+/g, '').split(/(?=[+-])/).filter(t => t !== '+' && t !== '-');
+      const constants = terms.filter(t => !t.includes('x')).length;
+      if (s.includes('(') || (s.match(/x/g) || []).length > 1 || constants > 1) return 'unsimplified';
+      return 'correct';
+    }
     if (q.type === 'set') {
       const got = s.split(/[,\s]+/).filter(Boolean);
       if (!got.length || got.some(x => !/^-?\d+$/.test(x))) return 'invalid';
@@ -73,11 +146,17 @@
     return 'correct';
   }
 
-  const placeholders = { number: '輸入數字', fraction: '例如 3/4 或 -2/3', set: '例如 1, 2, 3' };
+  const placeholders = { number: '輸入數字', fraction: '例如 3/4 或 -2/3', set: '例如 1, 2, 3', expr: '例如 3x+2' };
   const formatHelp = {
     number: '請輸入一個整數，例如 12 或 -3。',
     fraction: '請用「分子/分母」的格式輸入，例如 3/4；整數直接輸入就好。',
-    set: '請輸入數字，用逗號隔開，例如 1, 2, 3。'
+    set: '請輸入數字，用逗號隔開，例如 1, 2, 3。',
+    expr: '請輸入含 x 的式子，例如 3x+2 或 -x-5；分數係數可以寫成 5/6x。'
+  };
+  const unsimplifiedHelp = {
+    fraction: '答案的值對了！再約成最簡分數就完成了。',
+    number: '答案的值對了！再約成最簡分數就完成了。',
+    expr: '式子的值對了！再把括號展開、同類項合併就完成了。'
   };
 
   const chapterNo = id.split('-')[0];
@@ -163,7 +242,7 @@
         return;
       }
       if (result === 'unsimplified') {
-        slot.innerHTML = '<p class="note">答案的值對了！再約成最簡分數就完成了。</p>';
+        slot.innerHTML = `<p class="note">${unsimplifiedHelp[q.type]}</p>`;
         return;
       }
 
