@@ -11,7 +11,11 @@
   document.title = id + ' ' + data.title;
 
   // 題目改版後換新的 key，避免舊紀錄對到不同的題目
-  const storageKey = 'progress2-' + id;
+  const storageKey = 'progress3-' + id;
+
+  // 每組固定順序：一般題在前，挑戰題倒數第二，閱讀理解題最後
+  const tagOrder = { '挑戰': 1, '閱讀理解': 2 };
+  const ordered = questions => [...questions].sort((a, b) => (tagOrder[a.tag] || 0) - (tagOrder[b.tag] || 0));
   const total = data.groups.reduce((n, g) => n + g.questions.length, 0);
   let solved = loadSolved();
 
@@ -182,7 +186,7 @@
     <div class="card"><ul>${data.traps.map(t => `<li>${fmt(t)}</li>`).join('')}</ul></div>
 
     <h2>練習題</h2>
-    <p class="note">建議一天做一組，錯的題目隔兩三天再做一次。每組裡有一題「挑戰」和一題「閱讀理解」，閱讀理解題要先慢慢讀完、圈出題目真正在問什麼。答對或答錯都會有回饋圖片，可以到<a href="rewards.html">獎勵設定</a>換成喜歡的圖片。</p>
+    <p class="note">建議一天做一組，錯的題目隔兩三天再做一次。每組 5 題，倒數第二題是「挑戰」、最後一題是「閱讀理解」，閱讀理解題要先慢慢讀完、圈出題目真正在問什麼。答對或答錯都會有回饋圖片，可以到<a href="rewards.html">獎勵設定</a>換成喜歡的圖片。</p>
     <div class="progress" id="score" aria-live="polite"></div>
     <div id="groups"></div>
     <button class="link-btn" id="reset" type="button">清除這個單元的作答紀錄</button>`;
@@ -294,7 +298,7 @@
     h.className = 'group-title';
     h.textContent = g.name;
     groupsEl.append(h);
-    g.questions.forEach(q => groupsEl.append(renderQuestion(q, qNo++)));
+    ordered(g.questions).forEach(q => groupsEl.append(renderQuestion(q, qNo++)));
   });
 
   document.getElementById('reset').addEventListener('click', () => {
