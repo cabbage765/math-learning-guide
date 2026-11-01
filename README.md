@@ -12,7 +12,6 @@
 - `practice.html?s=2-1`：單元的關鍵建議與互動練習題（上學期第 1 到 3 章全部完成）
 - `rewards.html`：答題回饋的圖片設定（圖片只存在瀏覽器的 IndexedDB）
 - `advice.html`：完整五點建議
-- `setup.html`：製作紀錄
 
 ## 新增單元
 
