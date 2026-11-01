@@ -9,7 +9,7 @@
 - `index.html`：首頁，重點摘要
 - `daily-practice.html`：每日練習的做法、一週範例與打勾表
 - `chapters.html`：康軒國一上學期章節列表
-- `practice.html?s=2-1`：單元的關鍵建議與互動練習題（目前完成第 2、3 章）
+- `practice.html?s=2-1`：單元的關鍵建議與互動練習題（上學期第 1 到 3 章全部完成）
 - `rewards.html`：答題回饋的圖片設定（圖片只存在瀏覽器的 IndexedDB）
 - `advice.html`：完整五點建議
 - `setup.html`：製作紀錄
